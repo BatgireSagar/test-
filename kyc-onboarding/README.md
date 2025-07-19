@@ -20,7 +20,7 @@ See [docs/architecture.md](docs/architecture.md) for a full diagram and componen
 - **Docker Desktop** (Windows, Mac, or Linux): [Download here](https://www.docker.com/products/docker-desktop/)
 - **Git**: For cloning the repository
 - **Node.js 18+** (for Ops UI development)
-- **Java 17+** (for local Java service development)
+- **Java 21+** (for local Java service development)
 - **Python 3.9+** (for local Python service development)
 
 ### Environment Variables
@@ -130,7 +130,7 @@ Follow these steps to clone and run the system locally. Adjust the LLM provider 
 ### 1. Prerequisites
 - **Docker Desktop**: [Download and install](https://www.docker.com/products/docker-desktop/) for your OS (Windows, Mac, Linux). Start Docker Desktop before continuing.
 - **Git**: [Download here](https://git-scm.com/downloads) if not already installed.
-- **(Optional for UI/Service Dev)**: Node.js 18+, Java 17+, Python 3.9+ (see Project Setup Details above).
+- **(Optional for UI/Service Dev)**: Node.js 18+, Java 21+, Python 3.9+ (see Project Setup Details above).
 
 ### 2. Clone the Repository
 ```sh
