@@ -26,8 +26,36 @@ See [docs/architecture.md](docs/architecture.md) for a full diagram and componen
 ### Environment Variables
 Some services require environment variables for full functionality:
 
-- **LLM/Rule Engine (OpenAI integration):**
-  - Set `OPENAI_API_KEY` to your OpenAI API key to enable real LLM extraction.
+- **LLM/Rule Engine (Configurable LLM Integration):**
+  - You can use different LLMs for the Rule Engine microservice by setting environment variables—**no code changes required**:
+
+    #### 1. OpenAI (default)
+    - Set `LLM_PROVIDER=openai` (default) and `OPENAI_API_KEY=sk-...`.
+    - See below for how to get your OpenAI API key.
+
+    #### 2. Ollama (local LLM)
+    - [Install Ollama](https://ollama.com/download) and pull a model (e.g., `ollama pull llama2`).
+    - Start Ollama: `ollama run llama2`
+    - Set `LLM_PROVIDER=ollama` and (optionally) `OLLAMA_API_URL=http://localhost:11434`.
+
+    #### 3. Hugging Face Inference API
+    - Set `LLM_PROVIDER=huggingface`, `HUGGINGFACE_API_TOKEN=hf_...`, and (optionally) `HUGGINGFACE_MODEL=meta-llama/Llama-2-7b-chat-hf`.
+    - Get your Hugging Face token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+
+    #### 4. Dummy Provider (for testing)
+    - Set `LLM_PROVIDER=dummy` to use a static/dummy response.
+
+    #### Example (in your shell or docker-compose.yml):
+    ```sh
+    export LLM_PROVIDER=ollama
+    export OLLAMA_API_URL=http://localhost:11434
+    # or for OpenAI:
+    # export LLM_PROVIDER=openai
+    # export OPENAI_API_KEY=sk-...
+    ```
+
+    **No code changes are needed to switch LLMs—just set the environment variables!**
+
   - **How to get your OpenAI API key:**
     1. Go to [https://platform.openai.com/signup](https://platform.openai.com/signup) and sign up (or [log in](https://platform.openai.com/login) if you already have an account).
     2. Navigate to the [API Keys page](https://platform.openai.com/api-keys) or click your profile icon (top right) → “View API keys”.
@@ -47,10 +75,10 @@ Some services require environment variables for full functionality:
          environment:
            - OPENAI_API_KEY=sk-...yourkey...
        ```
-  - **Important:**
-    - Keep your API key secret! Never commit it to source control.
-    - OpenAI offers a free trial with limited usage. After that, you may need to add billing information.
-    - If you hit usage limits, you may need to upgrade your OpenAI account.
+    - **Important:**
+      - Keep your API key secret! Never commit it to source control.
+      - OpenAI offers a free trial with limited usage. After that, you may need to add billing information.
+      - If you hit usage limits, you may need to upgrade your OpenAI account.
 
 - **Database credentials** are set in `docker-compose.yml` and `application.properties` (default: user `kyc`, password `kycpass`).
 
