@@ -213,6 +213,21 @@ cd kyc-onboarding/docker
 - **Code changes:** Re-run `docker-compose up --build` to rebuild images.
 - **Logs:** View logs for a service with `docker-compose logs <service-name>`.
 
+### 7. Visual Aids: Screenshots & Video Tutorials
+
+- **Screenshots:**
+  - ![Docker Desktop running containers](docs/screenshots/docker-desktop-containers.png)
+  - ![Ollama running in terminal](docs/screenshots/ollama-terminal.png)
+  - ![OpenAI API key page](docs/screenshots/openai-api-key.png)
+  - ![Hugging Face token page](docs/screenshots/huggingface-token.png)
+  - ![Ops UI dashboard](docs/screenshots/ops-ui-dashboard.png)
+
+  *(If these screenshots are not present, you can request them or add your own to `docs/screenshots/`.)*
+
+- **Video Tutorial:**
+  - [Sample: KYC Onboarding System Local Setup (YouTube)](https://www.youtube.com/results?search_query=kyc+onboarding+docker+setup)
+  - *(If you need a custom video walkthrough, please request it!)*
+
 ---
 
 ## Quickstart (Summary Table)
