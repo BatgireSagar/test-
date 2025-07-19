@@ -123,45 +123,62 @@ Some services require environment variables for full functionality:
 
 ---
 
-## Local Setup Example: Step-by-Step
+## Local Setup Example: Step-by-Step (Detailed)
 
 Follow these steps to clone and run the system locally. Adjust the LLM provider section as needed for your use case.
 
-### 1. Clone the Repository
+### 1. Prerequisites
+- **Docker Desktop**: [Download and install](https://www.docker.com/products/docker-desktop/) for your OS (Windows, Mac, Linux). Start Docker Desktop before continuing.
+- **Git**: [Download here](https://git-scm.com/downloads) if not already installed.
+- **(Optional for UI/Service Dev)**: Node.js 18+, Java 17+, Python 3.9+ (see Project Setup Details above).
+
+### 2. Clone the Repository
 ```sh
 git clone <your-repo-url>
 cd kyc-onboarding/docker
 ```
+*(Replace `<your-repo-url>` with your actual repository URL.)*
 
-### 2. Choose and Configure Your LLM Provider
+### 3. Choose and Configure Your LLM Provider
 
 #### **A. OpenAI (default, cloud-based)**
-1. [Get your OpenAI API key](https://platform.openai.com/api-keys) (see instructions above).
-2. In your terminal:
+1. **Get your OpenAI API key:**
+   - Go to [https://platform.openai.com/signup](https://platform.openai.com/signup) and sign up (or [log in](https://platform.openai.com/login)).
+   - Click your profile icon (top right) → “View API keys” or go to [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+   - Click **“Create new secret key”**, name it (e.g., "kyc-onboarding-local"), and copy the key (starts with `sk-`).
+2. **Run the system:**
    ```sh
    export LLM_PROVIDER=openai
    export OPENAI_API_KEY=sk-...yourkey...
    docker-compose up --build
    ```
+   - *If using Windows CMD, use `set` instead of `export`.*
+   - *If using PowerShell, use `$env:LLM_PROVIDER="openai"` and `$env:OPENAI_API_KEY="sk-..."`.*
 
 #### **B. Ollama (local LLM, recommended for privacy/offline)**
-1. [Install Ollama](https://ollama.com/download) for your OS.
-2. Pull a model (e.g., Llama 2):
+1. **Install Ollama:**
+   - Go to [https://ollama.com/download](https://ollama.com/download) and download for your OS. Follow the install instructions.
+2. **Pull and run a model:**
    ```sh
    ollama pull llama2
    ollama run llama2
-   # (keep this running in a separate terminal)
    ```
-3. In a new terminal, from the `kyc-onboarding/docker` directory:
+   - *Keep the `ollama run` command running in a separate terminal window.*
+3. **Run the system:**
+   In a new terminal, from the `kyc-onboarding/docker` directory:
    ```sh
    export LLM_PROVIDER=ollama
    export OLLAMA_API_URL=http://localhost:11434
    docker-compose up --build
    ```
+   - *If you want to use a different model, change the `model` in the Ollama provider or set an env variable as needed.*
 
 #### **C. Hugging Face Inference API (cloud-based)**
-1. [Get your Hugging Face API token](https://huggingface.co/settings/tokens).
-2. In your terminal:
+1. **Get your Hugging Face API token:**
+   - Go to [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) and create a new token (read access is sufficient).
+2. **Choose a model:**
+   - You can use the default (`meta-llama/Llama-2-7b-chat-hf`) or any supported text generation model from [https://huggingface.co/models](https://huggingface.co/models).
+3. **Run the system:**
    ```sh
    export LLM_PROVIDER=huggingface
    export HUGGINGFACE_API_TOKEN=hf_...yourtoken...
@@ -170,23 +187,31 @@ cd kyc-onboarding/docker
    ```
 
 #### **D. Dummy Provider (for testing only)**
-```sh
-export LLM_PROVIDER=dummy
-docker-compose up --build
-```
+- No API keys or tokens needed. Just run:
+  ```sh
+  export LLM_PROVIDER=dummy
+  docker-compose up --build
+  ```
 
-### 3. Access the Services
-- API Gateway: http://localhost:8080
-- Camunda: http://localhost:8081
-- OCR Service: http://localhost:8090
-- LLM/Rule Engine: http://localhost:8091
-- Validation Engine: http://localhost:8092
-- Grafana: http://localhost:3000
-- Ops UI: http://localhost:3000 (if running)
+### 4. Access the Services
+- **API Gateway:** http://localhost:8080
+- **Camunda:** http://localhost:8081
+- **OCR Service:** http://localhost:8090
+- **LLM/Rule Engine:** http://localhost:8091
+- **Validation Engine:** http://localhost:8092
+- **Grafana:** http://localhost:3000
+- **Ops UI:** http://localhost:3000 (if running)
 
-### 4. Stopping and Cleaning Up
+### 5. Stopping and Cleaning Up
 - Stop all services: `Ctrl+C` then `docker-compose down`
 - Remove unused containers/images: `docker system prune -af`
+
+### 6. Troubleshooting
+- **Port conflicts:** Make sure nothing else is running on the listed ports.
+- **Ollama not found:** Ensure you installed Ollama and that `ollama run llama2` is running in a separate terminal.
+- **API key/token errors:** Double-check you copied the full key/token and set the correct environment variable.
+- **Code changes:** Re-run `docker-compose up --build` to rebuild images.
+- **Logs:** View logs for a service with `docker-compose logs <service-name>`.
 
 ---
 
