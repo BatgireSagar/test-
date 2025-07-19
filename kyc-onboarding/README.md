@@ -28,20 +28,29 @@ Some services require environment variables for full functionality:
 
 - **LLM/Rule Engine (OpenAI integration):**
   - Set `OPENAI_API_KEY` to your OpenAI API key to enable real LLM extraction.
-  - You can set this in your shell before running Docker Compose:
-    ```sh
-    export OPENAI_API_KEY=sk-...yourkey...
-    docker-compose up --build
-    ```
-  - Or add it to the `llm-rule-engine` service in `docker-compose.yml`:
-    ```yaml
-    llm-rule-engine:
-      build: ../llm-rule-engine
-      ports:
-        - "8091:8091"
-      environment:
-        - OPENAI_API_KEY=sk-...yourkey...
-    ```
+  - **How to get your OpenAI API key:**
+    1. Go to [https://platform.openai.com/signup](https://platform.openai.com/signup) and sign up (or [log in](https://platform.openai.com/login) if you already have an account).
+    2. Navigate to the [API Keys page](https://platform.openai.com/api-keys) or click your profile icon (top right) → “View API keys”.
+    3. Click **“Create new secret key”** and give it a name (e.g., "kyc-onboarding-local").
+    4. Copy the generated key (it will look like `sk-...`).
+    5. Set the key as an environment variable in your terminal before running Docker Compose:
+       ```sh
+       export OPENAI_API_KEY=sk-...yourkey...
+       docker-compose up --build
+       ```
+       Or add it to the `llm-rule-engine` service in `docker-compose.yml`:
+       ```yaml
+       llm-rule-engine:
+         build: ../llm-rule-engine
+         ports:
+           - "8091:8091"
+         environment:
+           - OPENAI_API_KEY=sk-...yourkey...
+       ```
+  - **Important:**
+    - Keep your API key secret! Never commit it to source control.
+    - OpenAI offers a free trial with limited usage. After that, you may need to add billing information.
+    - If you hit usage limits, you may need to upgrade your OpenAI account.
 
 - **Database credentials** are set in `docker-compose.yml` and `application.properties` (default: user `kyc`, password `kycpass`).
 
