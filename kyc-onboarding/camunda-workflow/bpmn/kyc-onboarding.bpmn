@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="kyc_onboarding" name="KYC Onboarding Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Document Received"/>
+    <bpmn:sequenceFlow id="flow1" sourceRef="StartEvent_1" targetRef="Task_DocumentParsing"/>
+    <bpmn:serviceTask id="Task_DocumentParsing" name="Document Parsing" camunda:type="external" camunda:topic="documentParsing"/>
+    <bpmn:sequenceFlow id="flow2" sourceRef="Task_DocumentParsing" targetRef="Task_PPRequirements"/>
+    <bpmn:serviceTask id="Task_PPRequirements" name="PP Rule Extraction" camunda:type="external" camunda:topic="ppRuleExtraction"/>
+    <bpmn:sequenceFlow id="flow3" sourceRef="Task_PPRequirements" targetRef="Task_Validation"/>
+    <bpmn:serviceTask id="Task_Validation" name="Validation" camunda:type="external" camunda:topic="validation"/>
+    <bpmn:sequenceFlow id="flow4" sourceRef="Task_Validation" targetRef="Gateway_ManualReview"/>
+    <bpmn:exclusiveGateway id="Gateway_ManualReview" name="Manual Review Needed?"/>
+    <bpmn:sequenceFlow id="flow5" sourceRef="Gateway_ManualReview" targetRef="Task_ManualReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${manualReviewRequired}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Task_ManualReview" name="Manual Review"/>
+    <bpmn:sequenceFlow id="flow6" sourceRef="Task_ManualReview" targetRef="Task_ComplianceReview"/>
+    <bpmn:sequenceFlow id="flow7" sourceRef="Gateway_ManualReview" targetRef="Task_ComplianceReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!manualReviewRequired}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Task_ComplianceReview" name="Compliance Review"/>
+    <bpmn:sequenceFlow id="flow8" sourceRef="Task_ComplianceReview" targetRef="EndEvent_1"/>
+    <bpmn:endEvent id="EndEvent_1" name="Onboard / Reject / Pending Info"/>
+  </bpmn:process>
+</bpmn:definitions>
