@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: kyc-postgres
+    environment:
+      POSTGRES_DB: kycdb
+      POSTGRES_USER: kycuser
+      POSTGRES_PASSWORD: kycpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  kyc-onboarding-service:
+    build: ./kyc-onboarding-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/kycdb
+      SPRING_DATASOURCE_USERNAME: kycuser
+      SPRING_DATASOURCE_PASSWORD: kycpass
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  document-parser-service:
+    build: ./document-parser-service
+    ports:
+      - "8081:8081"
+
+  validation-service:
+    build: ./validation-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/kycdb
+      SPRING_DATASOURCE_USERNAME: kycuser
+      SPRING_DATASOURCE_PASSWORD: kycpass
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+
+  camunda-worker:
+    build: ./camunda-worker
+    ports:
+      - "8083:8083"
+
+volumes:
+  pgdata:
