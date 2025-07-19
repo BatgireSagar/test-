@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  api-gateway:
+    build: ../api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - camunda
+      - ocr-service
+      - llm-rule-engine
+      - validation-engine
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/kycdb
+      SPRING_DATASOURCE_USERNAME: kyc
+      SPRING_DATASOURCE_PASSWORD: kycpass
+
+  camunda:
+    image: camunda/camunda-bpm-platform:run-latest
+    ports:
+      - "8081:8080"
+    environment:
+      - TZ=UTC
+
+  ocr-service:
+    build: ../ocr-service
+    ports:
+      - "8090:8090"
+
+  llm-rule-engine:
+    build: ../llm-rule-engine
+    ports:
+      - "8091:8091"
+
+  validation-engine:
+    build: ../validation-engine
+    ports:
+      - "8092:8092"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: kyc
+      POSTGRES_PASSWORD: kycpass
+      POSTGRES_DB: kycdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
