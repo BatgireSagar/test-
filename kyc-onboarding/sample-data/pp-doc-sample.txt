@@ -1,0 +1,13 @@
+Policy & Procedure Document (Sample)
+
+Section 1: Fund Client Onboarding
+- Required: Prospectus, FATCA W8BEN-E, UBO details
+
+Section 2: Jurisdiction - Cayman Islands
+- Additional: Tax compliance form required
+
+Section 3: Product - Derivatives
+- Required: MiFID II classification, margin agreement
+
+Section 4: Ownership > 25%
+- Required: Declare UBO with proof and background screening
