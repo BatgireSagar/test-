@@ -123,9 +123,70 @@ Some services require environment variables for full functionality:
 
 ---
 
-## How to Run the App Locally with Docker Desktop
+## Local Setup Example: Step-by-Step
 
-(See above for detailed steps.)
+Follow these steps to clone and run the system locally. Adjust the LLM provider section as needed for your use case.
+
+### 1. Clone the Repository
+```sh
+git clone <your-repo-url>
+cd kyc-onboarding/docker
+```
+
+### 2. Choose and Configure Your LLM Provider
+
+#### **A. OpenAI (default, cloud-based)**
+1. [Get your OpenAI API key](https://platform.openai.com/api-keys) (see instructions above).
+2. In your terminal:
+   ```sh
+   export LLM_PROVIDER=openai
+   export OPENAI_API_KEY=sk-...yourkey...
+   docker-compose up --build
+   ```
+
+#### **B. Ollama (local LLM, recommended for privacy/offline)**
+1. [Install Ollama](https://ollama.com/download) for your OS.
+2. Pull a model (e.g., Llama 2):
+   ```sh
+   ollama pull llama2
+   ollama run llama2
+   # (keep this running in a separate terminal)
+   ```
+3. In a new terminal, from the `kyc-onboarding/docker` directory:
+   ```sh
+   export LLM_PROVIDER=ollama
+   export OLLAMA_API_URL=http://localhost:11434
+   docker-compose up --build
+   ```
+
+#### **C. Hugging Face Inference API (cloud-based)**
+1. [Get your Hugging Face API token](https://huggingface.co/settings/tokens).
+2. In your terminal:
+   ```sh
+   export LLM_PROVIDER=huggingface
+   export HUGGINGFACE_API_TOKEN=hf_...yourtoken...
+   export HUGGINGFACE_MODEL=meta-llama/Llama-2-7b-chat-hf  # or your preferred model
+   docker-compose up --build
+   ```
+
+#### **D. Dummy Provider (for testing only)**
+```sh
+export LLM_PROVIDER=dummy
+docker-compose up --build
+```
+
+### 3. Access the Services
+- API Gateway: http://localhost:8080
+- Camunda: http://localhost:8081
+- OCR Service: http://localhost:8090
+- LLM/Rule Engine: http://localhost:8091
+- Validation Engine: http://localhost:8092
+- Grafana: http://localhost:3000
+- Ops UI: http://localhost:3000 (if running)
+
+### 4. Stopping and Cleaning Up
+- Stop all services: `Ctrl+C` then `docker-compose down`
+- Remove unused containers/images: `docker system prune -af`
 
 ---
 
