@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 public interface DocumentParser {
-    Map<String, String> parse(File file);
+    Map<String, String> parse(MultipartFile file);
 }
