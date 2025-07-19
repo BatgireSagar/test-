@@ -1,0 +1,21 @@
+{
+  "clientId": "C-2024-001",
+  "entityDetails": {
+    "entityName": "Sample Fund Ltd.",
+    "incorporationCountry": "Cayman Islands",
+    "directors": ["Alice Smith", "Bob Jones"],
+    "taxId": "KY123456789",
+    "leiCode": "5493001KJTIIGC8Y1R12"
+  },
+  "ownershipStructure": [
+    {"name": "Alice Smith", "percentage": 60},
+    {"name": "Bob Jones", "percentage": 40}
+  ],
+  "documents": [
+    {"type": "Prospectus", "status": "valid"},
+    {"type": "FATCA W8BEN-E", "status": "valid"},
+    {"type": "UBO Declaration", "status": "missing"},
+    {"type": "Tax Compliance Form", "status": "valid"}
+  ],
+  "productPreferences": ["Derivatives", "FX"]
+}
